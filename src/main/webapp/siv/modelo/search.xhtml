@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="page" value='#{modeloBean.page}'/>
+		<f:event type="preRenderView" listener='#{modeloBean.paginate}'/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="Search Modelo entities"/>
+
+	<ui:define name="header">
+		Modelo
+	</ui:define>
+
+	<ui:define name="subheader">
+		Search Modelo entities
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:form id="search">
+			<f:validateBean disabled="true">
+				<h:panelGroup styleClass="search">
+
+					<h:panelGrid columnClasses="label,component,required" columns="3">
+						<h:outputLabel for="modeloBeanExampleMarca" value="Marca:"/>
+						<h:panelGroup>
+							<h:selectOneMenu converter="#{marcaBean.converter}" id="modeloBeanExampleMarca" value="#{modeloBean.example.marca}">
+								<f:selectItem/>
+								<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{marcaBean.all}" var="_item"/>
+							</h:selectOneMenu>
+							<h:message for="modeloBeanExampleMarca" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="modeloBeanExampleDecricaomodelo" value="Decricao_modelo:"/>
+						<h:panelGroup>
+							<h:inputText id="modeloBeanExampleDecricaomodelo" value="#{modeloBean.example.decricao_modelo}"/>
+							<h:message for="modeloBeanExampleDecricaomodelo" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+					</h:panelGrid>
+					<h:panelGroup styleClass="buttons">
+						<h:commandLink value="Search" action='#{modeloBean.search}' styleClass="btn btn-primary"/>
+						<h:commandLink value="Create New" action='#{modeloBean.create}' styleClass="btn btn-primary"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			</f:validateBean>
+			
+			<h:dataTable id="modeloBeanPageItems" styleClass="data-table" value="#{modeloBean.pageItems}" var="_item">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Decricao_modelo"/>
+					</f:facet>
+					<h:link outcome="/siv/modelo/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemDecricaomodelo" value="#{_item.decricao_modelo}"/>
+					</h:link>
+				</h:column>
+			</h:dataTable>
+			<ui:include src="/resources/scaffold/paginator.xhtml">
+				<ui:param name="paginatorBean" value='#{modeloBean}'/>
+			</ui:include>
+		</h:form>
+			
+	</ui:define>
+
+</ui:composition>
